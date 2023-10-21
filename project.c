@@ -3,6 +3,10 @@
 #include<stdlib.h>
 
 int main_exit;
+int months[12][2] = {{1, 31}, {2, 28}, {3, 31}, {4, 30}, {5, 31}, {6, 30}, {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}};
+struct date{
+    int day,month,year;
+};
 
 struct{
     int emp_no;
@@ -12,6 +16,14 @@ struct{
     int hra;
 }add,upd,check;
 
+struct month_trans
+{
+    int emp_no;
+    int present;
+    int itax;
+    int soc;
+    struct date dop;
+}monthtrans,checktrans;
 void close()
 {
     printf("\n\n\n\nThis C Project is developed by Atharv Sharma!");
@@ -81,7 +93,78 @@ void new_emp()
         goto add_invalid;
     }
 }
-    
+void edit()
+{
+
+}
+
+void monthly_trans()
+{
+    int choice,flag=0,mon,totdays;
+    int i=0,j=0;
+    FILE *ptr,*ptr1;
+    ptr1=fopen("record.dat","r");
+    ptr=fopen("month.dat","a+");
+
+    emp_no:
+    system("cls");
+    printf("\t\t\t CREATE MONTHLY TRANSACTION");
+    printf("\nEnter Month of the Transaction: ");
+    scanf("%d",&mon);
+    for(i=0;i<12;i++)
+    {
+        for(j=0;j<2;j++)
+        {
+            totdays=months[i][j+1];
+            break;
+        }
+    }
+    printf("\nEnter the Employee Code");
+    scanf("%d",&monthtrans.emp_no);
+    while(fscanf(ptr1,"%d %s %d %d %d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)!=EOF)
+    {
+        if(monthtrans.emp_no==add.emp_no)
+        {
+            flag=1;
+            monthtrans.emp_no=add.emp_no;
+            break;
+        }
+    }
+    if(flag==1)
+    {
+        enterdaysno:
+        printf("\nEnter no. of days present: ");
+        scanf("%d",&monthtrans.present);
+        if(monthtrans.present>totdays)
+        {
+            printf("\nInvalid Days Present!");
+            goto enterdaysno;
+        }
+        printf("\nEnter Date of Salary(dd/mm/yyyy): ");
+        scanf("%d%d%d,&monthtrans.dop.day,&monthtrans.dop.month,&monthtrans.dop.year");
+        printf("\nEnter Income Tax: ");
+        scanf("%d",&monthtrans.itax);
+        printf("\nEnter Society Loan Security: ");
+        scanf("%d",&monthtrans.soc);
+        fprintf(ptr,"%d %d %d %d %d %d %d\n",monthtrans.emp_no,monthtrans.present,monthtrans.dop.day,monthtrans.dop.month,monthtrans.dop.year,monthtrans.itax,monthtrans.soc);
+        fclose(ptr);
+        fclose(ptr1);
+        printf("\nMonthly Transaction Created Successfully!");
+    }
+    add_invalid:
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
+    scanf("%d",main_exit);//not defined rn
+    system("cls");
+    if(main_exit==1)
+    menu();
+    else if(main_exit==0)
+    close();
+    else
+    {
+        printf("\nInvalid Entry! Try Again.");
+        goto add_invalid;
+    }
+}
 void menu()
 {
     system("cls");

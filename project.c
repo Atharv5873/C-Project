@@ -2,6 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 
+int i,j;
 int main_exit;
 int months[12][2] = {{1, 31}, {2, 28}, {3, 31}, {4, 30}, {5, 31}, {6, 30}, {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}};
 struct date{
@@ -81,7 +82,7 @@ void new_emp()
     }
     add_invalid:
     printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
-    scanf("%d",main_exit);//not defined rn
+    scanf("%d",main_exit);
     system("cls");
     if(main_exit==1)
     menu();
@@ -119,7 +120,7 @@ void monthly_trans()
             break;
         }
     }
-    printf("\nEnter the Employee Code");
+    printf("\nEnter the Employee Number");
     scanf("%d",&monthtrans.emp_no);
     while(fscanf(ptr1,"%d %s %d %d %d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)!=EOF)
     {
@@ -153,7 +154,102 @@ void monthly_trans()
     }
     add_invalid:
     printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
-    scanf("%d",main_exit);//not defined rn
+    scanf("%d",main_exit);
+    system("cls");
+    if(main_exit==1)
+    menu();
+    else if(main_exit==0)
+    close();
+    else
+    {
+        printf("\nInvalid Entry! Try Again.");
+        goto add_invalid;
+    }
+}
+
+void process()
+{
+    FILE *ptr,*ptr1,*ptr2;
+    int lines=0,lines1=0,ch=0;
+    ptr1=fopen("month.dat","r");
+
+    while((ch== fgetc(ptr1))!=EOF)
+    {
+        if(ch=='\n')
+        lines++;
+    }
+    ptr=fopen("record.dat","r");
+    while((ch== fgetc(ptr))!=EOF)
+    {
+        if(ch=='\n')
+        lines1++;
+    }
+    printf("Lines %d %d",lines,lines1);
+    int rec[lines1][5];
+    char *names[lines1];
+    int k,l;
+    int mon,yr;
+    int g=0;
+    float b,c,d;
+    int month,year,gross_ded,totdays;
+    float gross_earn;
+    char nm[60];
+    ptr=fopen("record.dat","r");
+    ptr1=fopen("month.dat","r");
+    ptr2=fopen("process.dat","a+");
+    fseek(ptr2,0,SEEK_END);
+    printf("\nEnter the year: ");
+    scanf("%d",&yr);
+    printf("\nEnter the month: ");
+    scanf("%d",&mon);
+    for(i=0;i<12;i++)
+    {
+        for(j=0;j<2;i++)
+        {
+            if(months[i][j]==mon)
+            {
+                totdays=months[i][j+1];
+                break;
+            }
+        }
+    }
+    while(fscanf(ptr,"%d %s %d %d %d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)!=EOF)
+    {
+        rec[g][0]=add.emp_no;
+        rec[g][1]=add.basic;
+        rec[g][2]=add.da;
+        rec[g][3]=add.hra;
+        names[g]=(char*)malloc(strlen(add.name)+1);
+        strcpy(names[g],add.name);
+        g++;
+    }
+    while(fscanf(ptr1,"%d %d %d %d %d %d %d\n",&monthtrans.emp_no,&monthtrans.present,&monthtrans.dop.day,&monthtrans.dop.month,&monthtrans.dop.year,&monthtrans.itax,&monthtrans.soc)!=EOF)
+    {
+        if(monthtrans.dop.year==yr && monthtrans.dop.month==mon)
+        {
+            for(k=0;k<lines1;k++)
+            {
+                if(rec[k][0]==monthtrans.emp_no)
+                {
+                    printf("Employee Number : %d",rec[k][0]);
+                    b=rec[k][1];
+                    c=rec[k][2];
+                    d=rec[k][3];
+                    gross_earn=monthtrans.present*b/totdays+monthtrans.present*c/totdays+monthtrans.present*d/totdays;
+                    gross_ded=monthtrans.itax+monthtrans.soc;
+                    fprintf(ptr2,"%d %s %d %d %d %f %d\n",monthtrans.emp_no,names[k],monthtrans.dop.day,monthtrans.dop.month,monthtrans.dop.year,gross_earn,gross_ded);
+                    break;
+                }
+            }
+        }
+    }
+    fclose(ptr);
+    fclose(ptr1);
+    fclose(ptr2);
+    printf("Payroll Processed Sucessfully");
+    add_invalid:
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
+    scanf("%d",main_exit);
     system("cls");
     if(main_exit==1)
     menu();

@@ -9,7 +9,8 @@ struct date{
     int day,month,year;
 };
 
-struct{
+struct empinfo
+{
     int emp_no;
     char name[60];
     int basic;
@@ -25,6 +26,15 @@ struct month_trans
     int soc;
     struct date dop;
 }monthtrans,checktrans;
+
+struct process
+{
+    int emp_no;
+    char name[60];
+    struct date pdate;
+    float gross_earn;
+    int gross_ded;
+}proc;
 void close()
 {
     printf("\n\n\n\nThis C Project is developed by Atharv Sharma!");
@@ -152,7 +162,7 @@ void monthly_trans()
         fclose(ptr1);
         printf("\nMonthly Transaction Created Successfully!");
     }
-    add_invalid:
+    t_invalid:
     printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
     scanf("%d",main_exit);
     system("cls");
@@ -163,7 +173,7 @@ void monthly_trans()
     else
     {
         printf("\nInvalid Entry! Try Again.");
-        goto add_invalid;
+        goto t_invalid;
     }
 }
 
@@ -247,7 +257,7 @@ void process()
     fclose(ptr1);
     fclose(ptr2);
     printf("Payroll Processed Sucessfully");
-    add_invalid:
+    p_invalid:
     printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
     scanf("%d",main_exit);
     system("cls");
@@ -258,7 +268,46 @@ void process()
     else
     {
         printf("\nInvalid Entry! Try Again.");
-        goto add_invalid;
+        goto p_invalid;
+    }
+}
+
+void view()
+{
+    FILE *view;
+    FILE *payslip;
+    view=fopen("process.dat","r");
+    payslip=fopen("payslips.dat","w");
+    int test=0;
+    float netpay;
+    system("cls");
+    printf("\EMP. NO.\tNAME \tDate \t\t\tGROSS EARNING \t\tGROSS DEDUCTION \t\tNET PAT\n");
+
+    while(fscanf(view,"%d %s %d %d %d %f %d",&proc.emp_no,&proc.name,&proc.pdate.day,&proc.pdate.month,&proc.pdate.year,&proc.gross_earn,&proc.gross_ded)!=EOF)
+    {
+        netpay=proc.gross_earn-proc.gross_ded;
+        printf("%d\t %s\t %d%d%d\t\t\t %f\t\t %d\t\t%f\n",proc.emp_no,proc.name,proc.pdate.day,proc.pdate.month,proc.pdate.year,proc.gross_earn,proc.gross_ded);
+        test++;
+    }
+    fclose(view);
+    fclose(payslip);
+    if(test==0)
+    {
+        system("cls");
+        printf("\nNO RECORDS FOUND!!!\n");
+    }
+    view_invalid:
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
+    scanf("%d",main_exit);
+    system("cls");
+    if(main_exit==1)
+    menu();
+    else if(main_exit==0)
+    close();
+    else
+    {
+        printf("\nInvalid Entry! Try Again.");
+        goto view_invalid;
     }
 }
 void menu()

@@ -71,15 +71,12 @@ void new_emp()
     scanf("%d",&check.emp_no);
     t=check_dup(check.emp_no);
     ptr=fopen("record.dat","a+");
-    while (fscanf(ptr,"%d%s%d%d%d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)==1)
-    {   
-        if(t==1)
-        printf("Employee already exists");
-    }
-    if(i!=1)
+    if (t == 1)
+    printf("Employee already exists");
+    else  
     {
         add.emp_no=check.emp_no;
-        printf("Enter Name:");
+        printf("\nEnter Name: ");
         scanf("%s",add.name);
         printf("\nEnter the  Basic Salary: ");
         scanf("%d",&add.basic);
@@ -95,7 +92,7 @@ void new_emp()
         printf("\nEmployee Created Successfully!");
     }
     add_invalid:
-    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit: ");
     scanf("%d",&main_exit);
     system("cls");
     if(main_exit==1)
@@ -431,7 +428,7 @@ int main()
     {
         printf("\n\nWrong Password!!\a\a\a");
         login_try:
-        printf("Enter 1 to try again and 0 to Exit: ");
+        printf("\nEnter 1 to try again and 0 to Exit: ");
         scanf("%d",&main_exit);
         if(main_exit==1)
         {

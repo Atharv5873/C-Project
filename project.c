@@ -52,23 +52,23 @@ int check_dup(int empno)
             test=1;
             break;
         }
-        fclose(ptr);
-        return test;
     }
+    fclose(ptr);
+    return test;
 }
+
 void new_emp()
 {
-    int choice,empno,i=0,t,ch=0,x;
-    FILE *ptr,*ptr1;
-    ptr1=fopen("newrec.dat","a+");
+    int i=0,t;
+    FILE *ptr;
     emp_no:
     system("cls");
     printf("\t\t\t ADD RECORD");
     printf("\nEnter the Employee Number : ");
     scanf("%d",&check.emp_no);
-    t=check_dup(check.emp_no);//function not written
+    t=check_dup(check.emp_no);
     ptr=fopen("record.dat","a+");
-    while (fscanf(ptr,"%d%d%d%d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)==1)
+    while (fscanf(ptr,"%d%s%d%d%d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)==1)
     {   
         if(t==1)
         printf("Employee already exists");
@@ -84,15 +84,16 @@ void new_emp()
         scanf("%d",&add.da);
         printf("\nEnter the Home Rent Allowance: ");
         scanf("%d",&add.hra);
-        fssek(ptr,0,SEEK_END);
-        fprintf(ptr,"%d%d%d%d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra);
-        fseek(ptr,0,SEEK_SET);
+        fseek(ptr, 0, SEEK_END);
+        fprintf(ptr, "%d %s %d %d %d\n", add.emp_no, add.name, add.basic, add.da, add.hra);
+        fseek(ptr, 0, SEEK_SET);
         fflush(ptr);
-        printf("\nEmployee Creted Successfully!");
+
+        printf("\nEmployee Created Successfully!");
     }
     add_invalid:
     printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
-    scanf("%d",main_exit);
+    scanf("%d",&main_exit);
     system("cls");
     if(main_exit==1)
     menu();
@@ -106,8 +107,72 @@ void new_emp()
 }
 void edit()
 {
-
+    int emp_no, found = 0;
+    FILE *ptr, *temp;
+    emp_no:
+    system("cls");
+    printf("\t\t\t EDIT RECORD");
+    printf("\nEnter the Employee Number you want to edit: ");
+    scanf("%d", &emp_no);
+    ptr = fopen("record.dat", "r");
+    temp = fopen("temp.dat", "w");
+    
+    while (fscanf(ptr, "%d %s %d %d %d", &add.emp_no, add.name, &add.basic, &add.da, &add.hra) != EOF)
+    {
+        if (emp_no == add.emp_no)
+        {
+            printf("Employee Details:\n");
+            printf("Employee Number: %d\n", add.emp_no);
+            printf("Name: %s\n", add.name);
+            printf("Basic Salary: %d\n", add.basic);
+            printf("Dearness Allowance: %d\n", add.da);
+            printf("Home Rent Allowance: %d\n", add.hra);
+            
+            printf("\nEnter new details:\n");
+            printf("Enter Name: ");
+            scanf("%s", add.name);
+            printf("Enter Basic Salary: ");
+            scanf("%d", &add.basic);
+            printf("Enter Dearness Allowance: ");
+            scanf("%d", &add.da);
+            printf("Enter Home Rent Allowance: ");
+            scanf("%d", &add.hra);
+            
+            fprintf(temp, "%d %s %d %d %d\n", add.emp_no, add.name, add.basic, add.da, add.hra);
+            found = 1;
+        }
+        else
+        {
+            fprintf(temp, "%d %s %d %d %d\n", add.emp_no, add.name, add.basic, add.da, add.hra);
+        }
+    }
+    
+    fclose(ptr);
+    fclose(temp);
+    
+    remove("record.dat");
+    rename("temp.dat", "record.dat");
+    
+    if (found == 0)
+    {
+        printf("Employee with Employee Number %d not found.\n", emp_no);
+    }
+    
+    edit_invalid:
+    printf("\n\nEnter 1 to go to the main menu and 0 to exit: ");
+    scanf("%d", &main_exit);
+    system("cls");
+    if (main_exit == 1)
+        menu();
+    else if (main_exit == 0)
+        close();
+    else
+    {
+        printf("Invalid Entry! Try Again.");
+        goto edit_invalid;
+    }
 }
+
 
 void monthly_trans()
 {
@@ -164,7 +229,7 @@ void monthly_trans()
     }
     t_invalid:
     printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
-    scanf("%d",main_exit);
+    scanf("%d",&main_exit);
     system("cls");
     if(main_exit==1)
     menu();
@@ -180,16 +245,18 @@ void monthly_trans()
 void process()
 {
     FILE *ptr,*ptr1,*ptr2;
-    int lines=0,lines1=0,ch=0;
+    int lines=0,lines1=0;;
+    int ch=0;
+
     ptr1=fopen("month.dat","r");
 
-    while((ch== fgetc(ptr1))!=EOF)
+    while((ch= fgetc(ptr1))!=EOF)
     {
         if(ch=='\n')
         lines++;
     }
     ptr=fopen("record.dat","r");
-    while((ch== fgetc(ptr))!=EOF)
+    while((ch= fgetc(ptr))!=EOF)
     {
         if(ch=='\n')
         lines1++;
@@ -214,7 +281,7 @@ void process()
     scanf("%d",&mon);
     for(i=0;i<12;i++)
     {
-        for(j=0;j<2;i++)
+        for(j=0;j<2;j++)
         {
             if(months[i][j]==mon)
             {
@@ -259,7 +326,7 @@ void process()
     printf("Payroll Processed Sucessfully");
     p_invalid:
     printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
-    scanf("%d",main_exit);
+    scanf("%d",&main_exit);
     system("cls");
     if(main_exit==1)
     menu();
@@ -281,13 +348,13 @@ void view()
     int test=0;
     float netpay;
     system("cls");
-    printf("\EMP. NO.\tNAME \tDate \t\t\tGROSS EARNING \t\tGROSS DEDUCTION \t\tNET PAT\n");
+    printf("\tEMP. NO.\tNAME \tDate \t\t\tGROSS EARNING \t\tGROSS DEDUCTION \t\tNET PAT\n");
 
     while(fscanf(view,"%d %s %d %d %d %f %d",&proc.emp_no,&proc.name,&proc.pdate.day,&proc.pdate.month,&proc.pdate.year,&proc.gross_earn,&proc.gross_ded)!=EOF)
     {
         netpay=proc.gross_earn-proc.gross_ded;
-        printf("%d\t %s\t %d%d%d\t\t\t %f\t\t %d\t\t%f\n",proc.emp_no,proc.name,proc.pdate.day,proc.pdate.month,proc.pdate.year,proc.gross_earn,proc.gross_ded);
-        test++;
+        printf("%d\t %s\t %02d/%02d/%d\t\t %f\t\t %d\t\t%f\n", proc.emp_no, proc.name, proc.pdate.day, proc.pdate.month, proc.pdate.year, proc.gross_earn, proc.gross_ded, netpay);
+
     }
     fclose(view);
     fclose(payslip);
@@ -297,8 +364,8 @@ void view()
         printf("\nNO RECORDS FOUND!!!\n");
     }
     view_invalid:
-    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
-    scanf("%d",main_exit);
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit: ");
+    scanf("%d",&main_exit);
     system("cls");
     if(main_exit==1)
     menu();
@@ -356,5 +423,27 @@ int main()
         for(int i=0;i<=7;i++)
         printf(".");
         menu();
+    }
+    else
+    {
+        printf("\n\nWrong Password!!\a\a\a");
+        login_try:
+        printf("Enter 1 to try again and 0 to Exit: ");
+        scanf("%d",&main_exit);
+        if(main_exit==1)
+        {
+            system("cls");
+            main();
+        }
+        else if(main_exit==0)
+        {
+            system("cls");
+            close();
+        }
+        else
+        {
+            printf("\nInvalid Choice!!! Try Again...\n");
+            goto login_try;
+        }
     }
 }

@@ -348,13 +348,14 @@ void view()
     int test=0;
     float netpay;
     system("cls");
-    printf("\tEMP. NO.\tNAME \tDate \t\t\tGROSS EARNING \t\tGROSS DEDUCTION \t\tNET PAT\n");
+    printf("\t| EMP. NO.  |     NAME     |   Date   | GROSS EARNING | GROSS DEDUCTION |    NET PAY    |\n");
+    printf("\t--------------------------------------------------------------------------------------------\n");
 
     while(fscanf(view,"%d %s %d %d %d %f %d",&proc.emp_no,&proc.name,&proc.pdate.day,&proc.pdate.month,&proc.pdate.year,&proc.gross_earn,&proc.gross_ded)!=EOF)
     {
         netpay=proc.gross_earn-proc.gross_ded;
-        printf("%d\t %s\t %02d/%02d/%d\t\t %f\t\t %d\t\t%f\n", proc.emp_no, proc.name, proc.pdate.day, proc.pdate.month, proc.pdate.year, proc.gross_earn, proc.gross_ded, netpay);
-
+        printf("\t| %8d | %12s | %02d/%02d/%d | %13.2f | %15d | %13.2f |\n", proc.emp_no, proc.name, proc.pdate.day, proc.pdate.month, proc.pdate.year, proc.gross_earn, proc.gross_ded, netpay);
+        test++;
     }
     fclose(view);
     fclose(payslip);

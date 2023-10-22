@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-
+void menu();
 int i,j;
 int main_exit;
 int months[12][2] = {{1, 31}, {2, 28}, {3, 31}, {4, 30}, {5, 31}, {6, 30}, {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}};
@@ -62,9 +62,8 @@ int check_dup(int empno)
 
 void new_emp()
 {
-    int i=0,t;
+    int t;
     FILE *ptr;
-    emp_no:
     system("cls");
     printf("\t\t\t ADD RECORD");
     printf("\nEnter the Employee Number : ");
@@ -109,7 +108,6 @@ void edit()
 {
     int emp_no, found = 0;
     FILE *ptr, *temp;
-    emp_no:
     system("cls");
     printf("\t\t\t EDIT RECORD");
     printf("\nEnter the Employee Number you want to edit: ");
@@ -176,13 +174,12 @@ void edit()
 
 void monthly_trans()
 {
-    int choice,flag=0,mon,totdays;
+    int flag=0,mon,totdays;
     int i=0,j=0;
     FILE *ptr,*ptr1;
     ptr1=fopen("record.dat","r");
     ptr=fopen("month.dat","a+");
 
-    emp_no:
     system("cls");
     printf("\t\t\t CREATE MONTHLY TRANSACTION");
     printf("\nEnter Month of the Transaction: ");
@@ -264,13 +261,12 @@ void process()
     printf("Lines %d %d",lines,lines1);
     int rec[lines1][5];
     char *names[lines1];
-    int k,l;
+    int k;
     int mon,yr;
     int g=0;
     float b,c,d;
-    int month,year,gross_ded,totdays;
+    int gross_ded,totdays;
     float gross_earn;
-    char nm[60];
     ptr=fopen("record.dat","r");
     ptr1=fopen("month.dat","r");
     ptr2=fopen("process.dat","a+");
@@ -351,7 +347,7 @@ void view()
     printf("\t| EMP. NO.  |     NAME     |   Date   | GROSS EARNING | GROSS DEDUCTION |    NET PAY    |\n");
     printf("\t--------------------------------------------------------------------------------------------\n");
 
-    while(fscanf(view,"%d %s %d %d %d %f %d",&proc.emp_no,&proc.name,&proc.pdate.day,&proc.pdate.month,&proc.pdate.year,&proc.gross_earn,&proc.gross_ded)!=EOF)
+    while(fscanf(view,"%d %s %d %d %d %f %d",&proc.emp_no,proc.name,&proc.pdate.day,&proc.pdate.month,&proc.pdate.year,&proc.gross_earn,&proc.gross_ded)!=EOF)
     {
         netpay=proc.gross_earn-proc.gross_ded;
         printf("\t| %8d | %12s | %02d/%02d/%d | %13.2f | %15d | %13.2f |\n", proc.emp_no, proc.name, proc.pdate.day, proc.pdate.month, proc.pdate.year, proc.gross_earn, proc.gross_ded, netpay);

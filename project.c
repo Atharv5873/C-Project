@@ -45,9 +45,12 @@ int check_dup(int empno)
     int test=0;
     FILE *ptr;
     ptr=fopen("record.dat","r");
-    while(fscanf(ptr,"%d %s %d %d %d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)!=EOF)
+    int temp_emp_no;
+    char temp_name[60];
+    int temp_basic, temp_da, temp_hra;
+    while (fscanf(ptr, "%d %s %d %d %d\n", &temp_emp_no, temp_name, &temp_basic, &temp_da, &temp_hra) != EOF)
     {
-        if(empno==add.emp_no)
+        if(empno==temp_emp_no)
         {
             test=1;
             break;

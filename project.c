@@ -308,7 +308,7 @@ void process()
             {
                 if(rec[k][0]==monthtrans.emp_no)
                 {
-                    printf("Employee Number : %d",rec[k][0]);
+                    printf("%d) Employee Number : %d\n",k+1,rec[k][0]);
                     b=rec[k][1];
                     c=rec[k][2];
                     d=rec[k][3];
@@ -323,9 +323,9 @@ void process()
     fclose(ptr);
     fclose(ptr1);
     fclose(ptr2);
-    printf("Payroll Processed Sucessfully");
+    printf("\n\t\t\tPayroll Processed Sucessfully");
     p_invalid:
-    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit: ");
     scanf("%d",&main_exit);
     system("cls");
     if(main_exit==1)

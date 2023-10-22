@@ -195,7 +195,7 @@ void monthly_trans()
             break;
         }
     }
-    printf("\nEnter the Employee Number");
+    printf("\nEnter the Employee Number: ");
     scanf("%d",&monthtrans.emp_no);
     while(fscanf(ptr1,"%d %s %d %d %d\n",&add.emp_no,add.name,&add.basic,&add.da,&add.hra)!=EOF)
     {
@@ -217,7 +217,7 @@ void monthly_trans()
             goto enterdaysno;
         }
         printf("\nEnter Date of Salary(dd/mm/yyyy): ");
-        scanf("%d%d%d,&monthtrans.dop.day,&monthtrans.dop.month,&monthtrans.dop.year");
+        scanf("%d%d%d", &monthtrans.dop.day, &monthtrans.dop.month, &monthtrans.dop.year);
         printf("\nEnter Income Tax: ");
         scanf("%d",&monthtrans.itax);
         printf("\nEnter Society Loan Security: ");
@@ -228,7 +228,7 @@ void monthly_trans()
         printf("\nMonthly Transaction Created Successfully!");
     }
     t_invalid:
-    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit");
+    printf("\n\n\n\t\tEnter 1 to go to the main menu and 0 to exit: ");
     scanf("%d",&main_exit);
     system("cls");
     if(main_exit==1)

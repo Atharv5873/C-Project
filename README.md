@@ -18,12 +18,6 @@ The Payroll Management System facilitates the following functionalities:
 - Libraries: Standard C libraries (stdio.h, string.h, stdlib.h)
 - Version Control: Git
 
-## Repository Structure
-
-- **/src**: Contains the source code files for the Payroll Management System.
-- **/docs**: Documentation files including user manuals and project reports.
-- **/images**: Images related to the project, such as screenshots and diagrams.
-
 ## Features
 
 - Employee record management including addition, editing, and deletion of employee details.
